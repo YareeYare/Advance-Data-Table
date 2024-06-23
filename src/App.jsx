@@ -4,7 +4,7 @@ import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
 import sampleData from "./sample-data.json"
 import { format, parseISO } from 'date-fns';
 
-import { Button, Stack } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 
 import ColumnVisibilitySidebar from './sidebars/ColumnVisibilitySidebar';
 import GroupingSidebar from "./sidebars/GroupingSidebar";
@@ -12,6 +12,18 @@ import SortingSidebar from './sidebars/SortingSidebar';
 import FilterSidebar from './sidebars/FilterSidebar';
 
 import './App.css';
+
+const GlobalSearchInput = ({ table }) => {
+	const { setGlobalFilter } = table;
+	return (
+		<TextField
+			variant="outlined"
+			size="small"
+			placeholder="Global Search..."
+			onChange={(e) => setGlobalFilter(e.target.value)}
+		/>
+	);
+};
 
 function App() {
 
@@ -22,12 +34,12 @@ function App() {
 		{ accessorKey: "id", header: "ID" },
 		{ accessorKey: "name", header: "Name" },
 		{ accessorKey: "category", header: "Category",
-        		filterSelectOptions: uniqueCategories,
-        		filterVariant: 'multi-select',
+	  		filterSelectOptions: uniqueCategories,
+	  		filterVariant: 'multi-select',
 		},
 		{ accessorKey: "subcategory", header: "Subcategory",
-        		filterSelectOptions: uniqueSubCategories,
-        		filterVariant: 'multi-select',
+	  		filterSelectOptions: uniqueSubCategories,
+	  		filterVariant: 'multi-select',
 		},
 		{
 		    accessorFn: (originalRow) => parseISO(originalRow.createdAt),
@@ -71,6 +83,7 @@ function App() {
 	const [grouping, setGrouping] = useState([]);
 	const [sorting, setSorting] = useState([]);
 	const [columnFilters, setColumnFilters] = useState([]);
+	const [globalFilter, setGlobalFilter] = useState('');
 
 	const handleDrawerOpen = (content) => {
 		setDrawerContent(content);
@@ -95,6 +108,7 @@ function App() {
 		enableGrouping: true,
 		renderTopToolbarCustomActions: () => 
 			<Stack direction="row" gap={2}>
+				<GlobalSearchInput table={table} />
 				<Button
 					onClick={() => handleDrawerOpen('visibility')}
 					// startIcon={<ViewColumnIcon />}
@@ -122,10 +136,11 @@ function App() {
 			</Stack>
 		,
 
-		state: { columnVisibility, grouping, sorting, columnFilters }, //manage columnVisibility state
+		state: { columnVisibility, grouping, sorting, columnFilters, globalFilter }, //manage columnVisibility state
   		onColumnVisibilityChange: setColumnVisibility,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
+		onGlobalFilterChange: setGlobalFilter,
 
     		enableFacetedValues: true,
 		enableGlobalFilter: true,
@@ -145,9 +160,9 @@ function App() {
 		initialState: {pagination:{pageSize: 10, pageIndex: 0}}
 	})
 
-      const handleClearFilters = () => {
-      	setColumnFilters([]);
-      	setIsDrawerOpen(false);
+	const handleClearFilters = () => {
+		setColumnFilters([]);
+		setIsDrawerOpen(false);
     	};
 
 	return (
