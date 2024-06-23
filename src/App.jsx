@@ -6,6 +6,9 @@ import { format } from 'date-fns';
 
 import { Button, Stack } from '@mui/material';
 import ColumnVisibilitySidebar from './sidebars/ColumnVisibilitySidebar';
+import GroupingSidebar from "./sidebars/GroupingSidebar";
+
+import './App.css';
 
 function App() {
 
@@ -23,6 +26,7 @@ function App() {
 
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [drawerContent, setDrawerContent] = useState(null);
+	const [grouping, setGrouping] = useState([]);
 
 	const handleDrawerOpen = (content) => {
 		setDrawerContent(content);
@@ -44,7 +48,7 @@ function App() {
 		columns,
 		data,
 
-		enableHiding: true,
+		enableGrouping: true,
 		renderTopToolbarCustomActions: () => (
 		      <Stack direction="row" gap={2}>
 		      	<Button
@@ -53,11 +57,19 @@ function App() {
 		      	>
 		            	Columns
 		      	</Button>
+				<Button
+					onClick={() => handleDrawerOpen("grouping")}
+					// startIcon={<GroupIcon />}
+        			>
+          				Grouping
+        			</Button>
 		      </Stack>
 		),
 
-		state: { columnVisibility }, //manage columnVisibility state
+		state: { columnVisibility, grouping }, //manage columnVisibility state
   		onColumnVisibilityChange: setColumnVisibility,
+		groupedColumnMode: 'reorder',
+		enableColumnDragging: false,
 		enableFullScreenToggle: false,
 		enableDensityToggle: false,
 		enableColumnActions: false,
@@ -85,7 +97,17 @@ function App() {
 			      />
 			}
 
-			<MaterialReactTable enableColumnVisibilityToggle table={table} />
+			{drawerContent === 'grouping' && 
+				<GroupingSidebar
+			        isOpen={isDrawerOpen}
+			        onClose={() => setIsDrawerOpen(false)}
+			        columns={columns}
+			        grouping={grouping}
+			        setGrouping={setGrouping}
+			      />
+			}
+
+			<MaterialReactTable enableColumnVisibilityToggle table={table} className="custom-table" />
 
 
 		</Container>
