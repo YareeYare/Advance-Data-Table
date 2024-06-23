@@ -17,7 +17,7 @@ const ColumnVisibilitySidebar = ({ isOpen, onClose, columns, columnVisibility, s
 	};
 
 	const showAllColumns = () => {
-		const allVisible = Object.fromEntries(columns.map(col => [col.accessorKey, true]));
+		const allVisible = Object.fromEntries(columns.map(col => [col.accessorKey || col.id, true]));
 		setTempColumnVisibility(allVisible);
 	};
 
@@ -45,8 +45,8 @@ const ColumnVisibilitySidebar = ({ isOpen, onClose, columns, columnVisibility, s
 							<ListItemText primary={column.header} />
 							<Switch
 								edge="start"
-								checked={tempColumnVisibility[column.accessorKey]}
-								onChange={() => handleToggleColumn(column.accessorKey)}
+								checked={tempColumnVisibility[column.accessorKey || column.id]}
+								onChange={() => handleToggleColumn(column.accessorKey  || column.id)}
 							/>
 						</ListItem>
 					))}

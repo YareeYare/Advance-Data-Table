@@ -36,9 +36,9 @@ const SortingSidebar = ({ isOpen, onClose, columns, sorting, setSorting }) => {
 				</div>
 				<List>
 					{columns.map((column) => (
-						<ListItem key={column.accessorKey} button onClick={() => handleSortingChange(column.accessorKey)}>
+						<ListItem button onClick={() => handleSortingChange(column.accessorKey || column.id)}>
 							<ListItemText primary={column.header} />
-							<Typography>{getSortIcon(column.accessorKey)}</Typography>
+							<Typography>{getSortIcon(column.accessorKey || column.id)}</Typography>
 						</ListItem>
 					))}
 				</List>
