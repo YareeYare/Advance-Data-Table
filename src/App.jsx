@@ -5,8 +5,10 @@ import sampleData from "./sample-data.json"
 import { format } from 'date-fns';
 
 import { Button, Stack } from '@mui/material';
+
 import ColumnVisibilitySidebar from './sidebars/ColumnVisibilitySidebar';
 import GroupingSidebar from "./sidebars/GroupingSidebar";
+import SortingSidebar from './sidebars/SortingSidebar';
 
 import './App.css';
 
@@ -27,6 +29,7 @@ function App() {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [drawerContent, setDrawerContent] = useState(null);
 	const [grouping, setGrouping] = useState([]);
+	const [sorting, setSorting] = useState([]);
 
 	const handleDrawerOpen = (content) => {
 		setDrawerContent(content);
@@ -49,7 +52,7 @@ function App() {
 		data,
 
 		enableGrouping: true,
-		renderTopToolbarCustomActions: () => (
+		renderTopToolbarCustomActions: () => 
 		      <Stack direction="row" gap={2}>
 		      	<Button
 					onClick={() => handleDrawerOpen('visibility')}
@@ -63,12 +66,19 @@ function App() {
         			>
           				Grouping
         			</Button>
+				<Button
+					onClick={() => handleDrawerOpen("sorting")}
+					// startIcon={<SortIcon />}
+				>
+					Sorting
+				</Button>
 		      </Stack>
-		),
+		,
 
-		state: { columnVisibility, grouping }, //manage columnVisibility state
+		state: { columnVisibility, grouping, sorting }, //manage columnVisibility state
   		onColumnVisibilityChange: setColumnVisibility,
-		groupedColumnMode: 'reorder',
+		onSortingChange: setSorting,
+
 		enableColumnDragging: false,
 		enableFullScreenToggle: false,
 		enableDensityToggle: false,
@@ -105,6 +115,16 @@ function App() {
 			        grouping={grouping}
 			        setGrouping={setGrouping}
 			      />
+			}
+
+			{drawerContent === 'sorting' && 
+			        <SortingSidebar
+			          isOpen={isDrawerOpen}
+			          onClose={() => setIsDrawerOpen(false)}
+			          columns={columns}
+			          sorting={sorting}
+			          setSorting={setSorting}
+			        />
 			}
 
 			<MaterialReactTable enableColumnVisibilityToggle table={table} className="custom-table" />
