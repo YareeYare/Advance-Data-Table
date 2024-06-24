@@ -32,17 +32,17 @@ const ColumnVisibilitySidebar = ({ isOpen, onClose, columns, columnVisibility, s
 			open={isOpen}
 			onClose={onClose}
 		>
-			<Box sx={{ width: 400, p: 2 }}>
-				<Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-					<Typography variant="h6">Show/Hide Columns</Typography>
-					<IconButton onClick={onClose} size="small">
-						<CloseIcon />
+			<Box sx={{ width: 400, p: 4 }}>
+				<Box display="flex" justifyContent="space-between" alignItems="center" margin="5px">
+					<Typography variant="h6" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#555555' }}>Show/Hide Columns</Typography>
+					<IconButton onClick={onClose}>
+						<CloseIcon sx={{ fontSize: '30px', color: '#333333' }} />
 					</IconButton>
 				</Box>
 				<List>
 					{columns.map((column) => (
-						<ListItem key={column.accessorKey} dense sx={{ border: '1px solid grey' }}>
-							<ListItemText primary={column.header} />
+						<ListItem key={column.accessorKey} dense sx={{ border: '1px solid rgba(211, 211, 211, 0.5)', display: 'flex',justifyContent:'space-between', padding:'10px', margin:'5px' }}>
+							<ListItemText primary={column.header} primaryTypographyProps={{ sx: { fontSize: '15px', color: '#666666' } }} />
 							<Switch
 								edge="start"
 								checked={tempColumnVisibility[column.accessorKey || column.id]}
@@ -55,7 +55,7 @@ const ColumnVisibilitySidebar = ({ isOpen, onClose, columns, columnVisibility, s
 					onClick={showAllColumns} 
 					fullWidth 
 					variant="outlined" 
-					sx={{ mt: 2 }}
+					sx={{ padding:'10px',margin:'5px', textTransform: 'none', color: '#555555', fontSize: '15px'}}
 				>
 					Show all columns
 				</Button>
@@ -64,7 +64,7 @@ const ColumnVisibilitySidebar = ({ isOpen, onClose, columns, columnVisibility, s
 					color="primary" 
 					fullWidth 
 					variant="contained" 
-					sx={{ mt: 2 }}
+					sx={{ padding:'10px',margin:'5px', textTransform: 'none', fontSize: '15px' }}
 				>
 					Apply
 				</Button>
